@@ -1,12 +1,14 @@
 package dev.haedhutner.towns.command.resident;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import dev.haedhutner.core.command.ParameterizedCommand;
 import dev.haedhutner.core.command.PlayerCommand;
+import dev.haedhutner.core.command.UserElement;
 import dev.haedhutner.core.command.annotation.Aliases;
 import dev.haedhutner.core.command.annotation.Description;
 import dev.haedhutner.core.command.annotation.Permission;
-import dev.haedhutner.core.utils.UserElement;
-import dev.haedhutner.towns.HunterTowns;
+import dev.haedhutner.towns.facade.ResidentFacade;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.args.CommandContext;
@@ -20,7 +22,12 @@ import javax.annotation.Nonnull;
 @Aliases("unfriend")
 @Description("Removes a player as a friend.")
 @Permission("atherystowns.resident.unfriend")
+@Singleton
 public class RemoveFriendCommand implements ParameterizedCommand, PlayerCommand {
+
+    @Inject
+    private ResidentFacade residentFacade;
+
     @Override
     public CommandElement[] getArguments() {
         return new CommandElement[]{
@@ -31,7 +38,7 @@ public class RemoveFriendCommand implements ParameterizedCommand, PlayerCommand 
     @Nonnull
     @Override
     public CommandResult execute(@Nonnull Player source, @Nonnull CommandContext args) throws CommandException {
-        HunterTowns.getInstance().getResidentFacade().removeResidentFriend(
+        residentFacade.removeResidentFriend(
                 source,
                 args.<User>getOne("friend").get()
         );
