@@ -1,11 +1,13 @@
 package dev.haedhutner.towns.command.nation;
 
+import com.google.inject.Inject;
 import dev.haedhutner.core.command.ParameterizedCommand;
 import dev.haedhutner.core.command.PlayerCommand;
 import dev.haedhutner.core.command.annotation.Aliases;
 import dev.haedhutner.core.command.annotation.Description;
 import dev.haedhutner.core.command.annotation.Permission;
 import dev.haedhutner.towns.HunterTowns;
+import dev.haedhutner.towns.facade.NationFacade;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.args.CommandContext;
@@ -21,6 +23,10 @@ import java.math.BigDecimal;
 @Description("Deposits funds into the nation.")
 @Permission("atherystowns.nation.deposit")
 public class DepositNationCommand implements PlayerCommand, ParameterizedCommand {
+
+    @Inject
+    private NationFacade nationFacade;
+
     @Override
     public CommandElement[] getArguments() {
         return new CommandElement[]{
@@ -31,7 +37,7 @@ public class DepositNationCommand implements PlayerCommand, ParameterizedCommand
     @Nonnull
     @Override
     public CommandResult execute(@Nonnull Player source, @Nonnull CommandContext args) throws CommandException {
-        HunterTowns.getInstance().getNationFacade().depositToNation(source, args.<BigDecimal>getOne("amount").get());
+        nationFacade.depositToNation(source, args.<BigDecimal>getOne("amount").get());
         return CommandResult.success();
     }
 }
