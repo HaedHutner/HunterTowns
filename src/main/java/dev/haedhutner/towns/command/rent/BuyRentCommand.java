@@ -1,11 +1,13 @@
 package dev.haedhutner.towns.command.rent;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import dev.haedhutner.core.command.ParameterizedCommand;
 import dev.haedhutner.core.command.PlayerCommand;
 import dev.haedhutner.core.command.annotation.Aliases;
 import dev.haedhutner.core.command.annotation.Description;
 import dev.haedhutner.core.command.annotation.Permission;
-import dev.haedhutner.towns.HunterTowns;
+import dev.haedhutner.towns.facade.RentFacade;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.args.CommandContext;
@@ -19,11 +21,16 @@ import javax.annotation.Nonnull;
 @Aliases("buy")
 @Permission("atherystowns.rent.buy")
 @Description("Rents the plot you're standing in for the provided amount of time.")
+@Singleton
 public class BuyRentCommand implements PlayerCommand, ParameterizedCommand {
+
+    @Inject
+    private RentFacade rentFacade;
+
     @Nonnull
     @Override
     public CommandResult execute(@Nonnull Player source, @Nonnull CommandContext args) throws CommandException {
-        HunterTowns.getInstance().getRentFacade().purchaseRent(
+        rentFacade.purchaseRent(
                 source,
                 args.<Integer>getOne("periods").orElse(1)
         );
