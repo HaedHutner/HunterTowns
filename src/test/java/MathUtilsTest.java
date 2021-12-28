@@ -1,5 +1,5 @@
-import com.atherys.towns.util.BasicRectangle;
-import com.atherys.towns.util.MathUtils;
+import dev.haedhutner.towns.util.BasicRectangle;
+import dev.haedhutner.towns.util.MathUtils;
 import com.flowpowered.math.vector.Vector2d;
 import com.flowpowered.math.vector.Vector2i;
 import com.flowpowered.math.vector.Vector3d;

@@ -7,5 +7,5 @@ https://github.com/Atherys-Horizons/AtherysTowns/wiki/Commands-&-Permissions
 
 # Installation
 ## Requirements
-* AtherysCore. See: https://github.com/Atherys-Horizons/AtherysCore
+* HunterCore. See: https://github.com/Atherys-Horizons/HunterCore
 * PostgreSQL database
