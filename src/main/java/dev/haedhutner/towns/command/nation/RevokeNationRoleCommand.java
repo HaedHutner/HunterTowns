@@ -1,12 +1,13 @@
 package dev.haedhutner.towns.command.nation;
 
+import com.google.inject.Inject;
 import dev.haedhutner.core.command.ParameterizedCommand;
 import dev.haedhutner.core.command.PlayerCommand;
+import dev.haedhutner.core.command.UserElement;
 import dev.haedhutner.core.command.annotation.Aliases;
 import dev.haedhutner.core.command.annotation.Description;
 import dev.haedhutner.core.command.annotation.Permission;
-import dev.haedhutner.core.utils.UserElement;
-import dev.haedhutner.towns.HunterTowns;
+import dev.haedhutner.towns.facade.NationFacade;
 import dev.haedhutner.towns.util.TownsElementsFactory;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
@@ -22,18 +23,25 @@ import javax.annotation.Nonnull;
 @Description("Revoke role from nation resident")
 @Permission("atherystowns.nation.role")
 public class RevokeNationRoleCommand implements PlayerCommand, ParameterizedCommand {
+
+    @Inject
+    private NationFacade nationFacade;
+
+    @Inject
+    private TownsElementsFactory townsElementsFactory;
+
     @Override
     public CommandElement[] getArguments() {
         return new CommandElement[]{
                 new UserElement(Text.of("resident")),
-                TownsElementsFactory.createNationRoleCommandElement()
+                townsElementsFactory.createNationRoleCommandElement()
         };
     }
 
     @Nonnull
     @Override
     public CommandResult execute(@Nonnull Player source, @Nonnull CommandContext args) throws CommandException {
-        HunterTowns.getInstance().getNationFacade().removeNationRole(
+        nationFacade.removeNationRole(
                 source,
                 args.<User>getOne("resident").get(),
                 args.<String>getOne("role").get()

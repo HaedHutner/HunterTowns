@@ -24,10 +24,13 @@ public class NationInfoCommand implements ParameterizedCommand {
     @Inject
     private NationFacade nationFacade;
 
+    @Inject
+    private TownsElementsFactory townsElementsFactory;
+
     @Override
     public CommandElement[] getArguments() {
         return new CommandElement[]{
-                TownsElementsFactory.createNationCommandElement()
+                townsElementsFactory.createNationCommandElement()
         };
     }
 

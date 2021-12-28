@@ -1,11 +1,13 @@
 package dev.haedhutner.towns.command.nation;
 
+import com.google.inject.Inject;
 import dev.haedhutner.core.command.ParameterizedCommand;
 import dev.haedhutner.core.command.PlayerCommand;
 import dev.haedhutner.core.command.annotation.Aliases;
 import dev.haedhutner.core.command.annotation.Description;
 import dev.haedhutner.core.command.annotation.Permission;
 import dev.haedhutner.towns.HunterTowns;
+import dev.haedhutner.towns.facade.NationFacade;
 import dev.haedhutner.towns.model.entity.Town;
 import dev.haedhutner.towns.util.TownsElementsFactory;
 import org.spongepowered.api.command.CommandException;
@@ -20,17 +22,24 @@ import javax.annotation.Nonnull;
 @Description("Set the capital for your nation.")
 @Permission("atherystowns.nation.capital")
 public class SetNationCapitalCommand implements ParameterizedCommand, PlayerCommand {
+
+    @Inject
+    private NationFacade nationFacade;
+
+    @Inject
+    private TownsElementsFactory townsElementsFactory;
+
     @Override
     public CommandElement[] getArguments() {
         return new CommandElement[] {
-                TownsElementsFactory.createTownCommandElement()
+                townsElementsFactory.createTownCommandElement()
         };
     }
 
     @Nonnull
     @Override
     public CommandResult execute(@Nonnull Player source, @Nonnull CommandContext args) throws CommandException {
-        HunterTowns.getInstance().getNationFacade().setNationCapital(source, args.<Town>getOne("town").get());
+        nationFacade.setNationCapital(source, args.<Town>getOne("town").get());
         return CommandResult.success();
     }
 }

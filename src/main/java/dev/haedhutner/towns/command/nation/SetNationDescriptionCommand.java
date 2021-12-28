@@ -1,11 +1,13 @@
 package dev.haedhutner.towns.command.nation;
 
+import com.google.inject.Inject;
 import dev.haedhutner.core.command.ParameterizedCommand;
 import dev.haedhutner.core.command.PlayerCommand;
 import dev.haedhutner.core.command.annotation.Aliases;
 import dev.haedhutner.core.command.annotation.Description;
 import dev.haedhutner.core.command.annotation.Permission;
 import dev.haedhutner.towns.HunterTowns;
+import dev.haedhutner.towns.facade.NationFacade;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.args.CommandContext;
@@ -21,6 +23,10 @@ import javax.annotation.Nonnull;
 @Description("Sets the nation's description.")
 @Permission("atherystowns.nation.description")
 public class SetNationDescriptionCommand implements ParameterizedCommand, PlayerCommand {
+
+    @Inject
+    private NationFacade nationFacade;
+
     @Override
     public CommandElement[] getArguments() {
         return new CommandElement[] {
@@ -35,7 +41,7 @@ public class SetNationDescriptionCommand implements ParameterizedCommand, Player
     @Nonnull
     @Override
     public CommandResult execute(@Nonnull Player source, @Nonnull CommandContext args) throws CommandException {
-        HunterTowns.getInstance().getNationFacade().setNationDescription(
+        nationFacade.setNationDescription(
                 source, args.<Text>getOne("description").get()
         );
         return CommandResult.success();
