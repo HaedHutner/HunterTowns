@@ -1,12 +1,15 @@
 package dev.haedhutner.towns.command.town;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import dev.haedhutner.core.command.ParameterizedCommand;
 import dev.haedhutner.core.command.PlayerCommand;
 import dev.haedhutner.core.command.annotation.Aliases;
 import dev.haedhutner.core.command.annotation.Description;
 import dev.haedhutner.core.command.annotation.Permission;
-import dev.haedhutner.core.utils.UserElement;
+import dev.haedhutner.core.command.UserElement;
 import dev.haedhutner.towns.HunterTowns;
+import dev.haedhutner.towns.facade.TownFacade;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.args.CommandContext;
@@ -20,7 +23,12 @@ import javax.annotation.Nonnull;
 @Aliases("kick")
 @Permission("atherystowns.town.kick")
 @Description("Kicks the given player from your town.")
+@Singleton
 public class TownKickCommand implements PlayerCommand, ParameterizedCommand {
+
+    @Inject
+    private TownFacade townFacade;
+
     @Override
     public CommandElement[] getArguments() {
         return new CommandElement[]{
@@ -31,7 +39,7 @@ public class TownKickCommand implements PlayerCommand, ParameterizedCommand {
     @Nonnull
     @Override
     public CommandResult execute(@Nonnull Player source, @Nonnull CommandContext args) throws CommandException {
-        HunterTowns.getInstance().getTownFacade().kickFromTown(source, args.<User>getOne("player").get());
+        townFacade.kickFromTown(source, args.<User>getOne("player").get());
         return CommandResult.success();
     }
 }

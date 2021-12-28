@@ -1,11 +1,14 @@
 package dev.haedhutner.towns.command.town;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import dev.haedhutner.core.command.ParameterizedCommand;
 import dev.haedhutner.core.command.PlayerCommand;
 import dev.haedhutner.core.command.annotation.Aliases;
 import dev.haedhutner.core.command.annotation.Description;
 import dev.haedhutner.core.command.annotation.Permission;
 import dev.haedhutner.towns.HunterTowns;
+import dev.haedhutner.towns.facade.TownFacade;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.args.CommandContext;
@@ -20,7 +23,12 @@ import javax.annotation.Nonnull;
 @Aliases("color")
 @Description("Sets the color of your town.")
 @Permission("atherystowns.town.color")
+@Singleton
 public class SetTownColorCommand implements ParameterizedCommand, PlayerCommand {
+
+    @Inject
+    private TownFacade townFacade;
+
     @Override
     public CommandElement[] getArguments() {
         return new CommandElement[]{
@@ -31,7 +39,7 @@ public class SetTownColorCommand implements ParameterizedCommand, PlayerCommand 
     @Nonnull
     @Override
     public CommandResult execute(@Nonnull Player source, @Nonnull CommandContext args) throws CommandException {
-        HunterTowns.getInstance().getTownFacade().setPlayerTownColor(source, args.<TextColor>getOne("color").get());
+        townFacade.setPlayerTownColor(source, args.<TextColor>getOne("color").get());
         return CommandResult.success();
     }
 }

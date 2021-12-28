@@ -1,11 +1,14 @@
 package dev.haedhutner.towns.command.town;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import dev.haedhutner.core.command.ParameterizedCommand;
 import dev.haedhutner.core.command.PlayerCommand;
 import dev.haedhutner.core.command.annotation.Aliases;
 import dev.haedhutner.core.command.annotation.Description;
 import dev.haedhutner.core.command.annotation.Permission;
 import dev.haedhutner.towns.HunterTowns;
+import dev.haedhutner.towns.facade.TownFacade;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.args.CommandContext;
@@ -20,7 +23,12 @@ import java.math.BigDecimal;
 @Aliases("deposit")
 @Description("Deposits funds into the town.")
 @Permission("atherystowns.town.deposit")
+@Singleton
 public class DepositTownCommand implements PlayerCommand, ParameterizedCommand {
+
+    @Inject
+    private TownFacade townFacade;
+
     @Override
     public CommandElement[] getArguments() {
         return new CommandElement[]{
@@ -31,7 +39,7 @@ public class DepositTownCommand implements PlayerCommand, ParameterizedCommand {
     @Nonnull
     @Override
     public CommandResult execute(@Nonnull Player source, @Nonnull CommandContext args) throws CommandException {
-        HunterTowns.getInstance().getTownFacade().depositToTown(source, args.<BigDecimal>getOne("amount").get());
+        townFacade.depositToTown(source, args.<BigDecimal>getOne("amount").get());
         return CommandResult.success();
     }
 }

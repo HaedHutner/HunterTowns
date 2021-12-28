@@ -1,11 +1,14 @@
 package dev.haedhutner.towns.command.town;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import dev.haedhutner.core.command.ParameterizedCommand;
 import dev.haedhutner.core.command.PlayerCommand;
 import dev.haedhutner.core.command.annotation.Aliases;
 import dev.haedhutner.core.command.annotation.Description;
 import dev.haedhutner.core.command.annotation.Permission;
 import dev.haedhutner.towns.HunterTowns;
+import dev.haedhutner.towns.facade.TownFacade;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.args.CommandContext;
@@ -19,7 +22,12 @@ import javax.annotation.Nonnull;
 @Aliases("name")
 @Description("Sets the name of your town.")
 @Permission("atherystowns.town.name")
+@Singleton
 public class SetTownNameCommand implements PlayerCommand, ParameterizedCommand {
+
+    @Inject
+    private TownFacade townFacade;
+
     @Override
     public CommandElement[] getArguments() {
         return new CommandElement[]{
@@ -30,7 +38,7 @@ public class SetTownNameCommand implements PlayerCommand, ParameterizedCommand {
     @Nonnull
     @Override
     public CommandResult execute(@Nonnull Player source, @Nonnull CommandContext args) throws CommandException {
-        HunterTowns.getInstance().getTownFacade().setPlayerTownName(
+        townFacade.setPlayerTownName(
                 source, args.<String>getOne("name").orElse("")
         );
         return CommandResult.success();

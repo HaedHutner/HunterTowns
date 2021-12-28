@@ -1,11 +1,14 @@
 package dev.haedhutner.towns.command.town;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import dev.haedhutner.core.command.ParameterizedCommand;
 import dev.haedhutner.core.command.PlayerCommand;
 import dev.haedhutner.core.command.annotation.Aliases;
 import dev.haedhutner.core.command.annotation.Description;
 import dev.haedhutner.core.command.annotation.Permission;
 import dev.haedhutner.towns.HunterTowns;
+import dev.haedhutner.towns.facade.TownFacade;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.args.CommandContext;
@@ -19,7 +22,12 @@ import javax.annotation.Nonnull;
 @Aliases("invite")
 @Description("Invites a player to your town.")
 @Permission("atherystowns.town.invite")
+@Singleton
 public class InviteToTownCommand implements PlayerCommand, ParameterizedCommand {
+
+    @Inject
+    private TownFacade townFacade;
+
     @Override
     public CommandElement[] getArguments() {
         return new CommandElement[]{
@@ -30,7 +38,7 @@ public class InviteToTownCommand implements PlayerCommand, ParameterizedCommand 
     @Nonnull
     @Override
     public CommandResult execute(@Nonnull Player source, @Nonnull CommandContext args) throws CommandException {
-        HunterTowns.getInstance().getTownFacade().inviteToTown(source, args.<Player>getOne("player").get());
+        townFacade.inviteToTown(source, args.<Player>getOne("player").get());
         return CommandResult.success();
     }
 }
