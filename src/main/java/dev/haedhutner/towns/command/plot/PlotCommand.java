@@ -2,6 +2,7 @@ package dev.haedhutner.towns.command.plot;
 
 import com.google.common.collect.Sets;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import dev.haedhutner.core.command.ParentCommand;
 import dev.haedhutner.core.command.PlayerCommand;
 import dev.haedhutner.core.command.annotation.*;
@@ -20,6 +21,7 @@ import java.util.Set;
 @Description("Base plot command.")
 @Permission("atherystowns.plot.base")
 @HelpCommand(title = "Plot Help", command = "help")
+@Singleton
 public class PlotCommand implements PlayerCommand, ParentCommand {
 
     @Inject
