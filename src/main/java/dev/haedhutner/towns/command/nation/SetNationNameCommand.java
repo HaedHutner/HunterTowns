@@ -2,6 +2,7 @@
 package dev.haedhutner.towns.command.nation;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import dev.haedhutner.core.command.ParameterizedCommand;
 import dev.haedhutner.core.command.PlayerCommand;
 import dev.haedhutner.core.command.annotation.Aliases;
@@ -22,6 +23,7 @@ import javax.annotation.Nonnull;
 @Aliases("name")
 @Description("Sets the nation's name.")
 @Permission("atherystowns.nation.name")
+@Singleton
 public class SetNationNameCommand implements ParameterizedCommand, PlayerCommand {
 
     @Inject

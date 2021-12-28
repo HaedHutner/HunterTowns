@@ -1,6 +1,7 @@
 package dev.haedhutner.towns.command.nation;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import dev.haedhutner.core.command.ParameterizedCommand;
 import dev.haedhutner.core.command.annotation.Aliases;
 import dev.haedhutner.core.command.annotation.Description;
@@ -19,6 +20,7 @@ import javax.annotation.Nonnull;
 @Aliases("info")
 @Description("Displays information about the nation.")
 @Permission("atherystowns.nation.info")
+@Singleton
 public class NationInfoCommand implements ParameterizedCommand {
 
     @Inject

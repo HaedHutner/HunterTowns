@@ -1,6 +1,7 @@
 package dev.haedhutner.towns.command.nation.admin;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import dev.haedhutner.core.command.ParameterizedCommand;
 import dev.haedhutner.core.command.PlayerCommand;
 import dev.haedhutner.core.command.annotation.Aliases;
@@ -21,6 +22,7 @@ import javax.annotation.Nonnull;
 @Aliases("claim")
 @Description("Claims the current plot selection for the specified nation.")
 @Permission("atherystowns.nation.admin.plot.claim")
+@Singleton
 public class ClaimNationPlotCommand implements PlayerCommand, ParameterizedCommand {
 
     @Inject

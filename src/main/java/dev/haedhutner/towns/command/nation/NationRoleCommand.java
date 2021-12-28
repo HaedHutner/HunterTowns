@@ -2,6 +2,7 @@ package dev.haedhutner.towns.command.nation;
 
 import com.google.common.collect.Sets;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import dev.haedhutner.core.command.ParentCommand;
 import dev.haedhutner.core.command.annotation.*;
 import org.spongepowered.api.command.CommandException;
@@ -16,6 +17,7 @@ import java.util.Set;
 @Description("Commands for nation roles")
 @Permission("atherystowns.nation.role")
 @HelpCommand(title = "Nation Role Help", prefix = "nation")
+@Singleton
 public class NationRoleCommand implements ParentCommand {
 
     @Inject

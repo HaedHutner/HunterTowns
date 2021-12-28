@@ -2,6 +2,7 @@ package dev.haedhutner.towns.command.nation;
 
 import com.google.common.collect.Sets;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import dev.haedhutner.core.command.ParentCommand;
 import dev.haedhutner.core.command.PlayerCommand;
 import dev.haedhutner.core.command.annotation.Aliases;
@@ -23,6 +24,7 @@ import java.util.Set;
 @Description("Base nation command.")
 @Permission("atherystowns.nation.base")
 @HelpCommand(title = "Nation Help", command = "help")
+@Singleton
 public class NationCommand implements PlayerCommand, ParentCommand {
 
     @Inject
@@ -71,6 +73,9 @@ public class NationCommand implements PlayerCommand, ParentCommand {
     private NationRoleCommand nationRoleCommand;
 
     @Inject
+    private NationSetColorCommand setColorCommand;
+
+    @Inject
     private SetNationTaxCommand setNationTaxCommand;
 
     @Inject
@@ -110,6 +115,7 @@ public class NationCommand implements PlayerCommand, ParentCommand {
             nationRoleCommand,
             setNationDescriptionCommand,
             setNationNameCommand,
+            setColorCommand,
             setNationCapitalCommand,
             nationPlotCommand,
             withdrawNationCommand,

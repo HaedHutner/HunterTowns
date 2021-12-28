@@ -1,6 +1,7 @@
 package dev.haedhutner.towns.command.nation;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import dev.haedhutner.core.command.ParameterizedCommand;
 import dev.haedhutner.core.command.PlayerCommand;
 import dev.haedhutner.core.command.UserElement;
@@ -24,6 +25,7 @@ import javax.annotation.Nonnull;
 @Aliases("permit")
 @Description("Grants a resident, town, or nation a permission with your nation.")
 @Permission("atherystowns.nation.permission")
+@Singleton
 public class NationAddActorPermissionCommand implements ParameterizedCommand, PlayerCommand {
 
     @Inject

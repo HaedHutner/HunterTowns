@@ -1,6 +1,7 @@
 package dev.haedhutner.towns.command.nation;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import dev.haedhutner.core.command.ParameterizedCommand;
 import dev.haedhutner.core.command.PlayerCommand;
 import dev.haedhutner.core.command.annotation.Aliases;
@@ -22,6 +23,7 @@ import java.math.BigDecimal;
 @Aliases("withdraw")
 @Description("Withdraws funds from the nation.")
 @Permission("atherystowns.nation.withdraw")
+@Singleton
 public class WithdrawNationCommand implements PlayerCommand, ParameterizedCommand {
 
     @Inject

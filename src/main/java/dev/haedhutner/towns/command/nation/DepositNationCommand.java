@@ -1,6 +1,7 @@
 package dev.haedhutner.towns.command.nation;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import dev.haedhutner.core.command.ParameterizedCommand;
 import dev.haedhutner.core.command.PlayerCommand;
 import dev.haedhutner.core.command.annotation.Aliases;
@@ -22,6 +23,7 @@ import java.math.BigDecimal;
 @Aliases("deposit")
 @Description("Deposits funds into the nation.")
 @Permission("atherystowns.nation.deposit")
+@Singleton
 public class DepositNationCommand implements PlayerCommand, ParameterizedCommand {
 
     @Inject

@@ -1,6 +1,7 @@
 package dev.haedhutner.towns.command.nation;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import dev.haedhutner.core.command.ParameterizedCommand;
 import dev.haedhutner.core.command.PlayerCommand;
 import dev.haedhutner.core.command.annotation.Aliases;
@@ -20,6 +21,7 @@ import javax.annotation.Nonnull;
 @Aliases("ally")
 @Description("Makes a nation allied with yours.")
 @Permission("atherystowns.nation.ally")
+@Singleton
 public class AddNationAllyCommand implements ParameterizedCommand, PlayerCommand {
 
     @Inject

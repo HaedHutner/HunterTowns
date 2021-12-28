@@ -1,6 +1,7 @@
 package dev.haedhutner.towns.command.nation.admin;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import dev.haedhutner.core.command.ParameterizedCommand;
 import dev.haedhutner.core.command.annotation.Aliases;
 import dev.haedhutner.core.command.annotation.Description;
@@ -21,6 +22,7 @@ import javax.annotation.Nonnull;
 @Aliases("remove")
 @Description("Removes a town from a nation.")
 @Permission("atherystowns.nation.admin.remove")
+@Singleton
 public class RemoveTownFromNationCommand implements ParameterizedCommand {
 
     @Inject

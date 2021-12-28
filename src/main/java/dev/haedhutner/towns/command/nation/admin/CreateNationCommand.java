@@ -2,6 +2,7 @@
 package dev.haedhutner.towns.command.nation.admin;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import dev.haedhutner.core.command.ParameterizedCommand;
 import dev.haedhutner.core.command.annotation.Aliases;
 import dev.haedhutner.core.command.annotation.Description;
@@ -22,6 +23,7 @@ import javax.annotation.Nonnull;
 @Aliases("create")
 @Description("Creates a nation.")
 @Permission("atherystowns.nation.admin.create")
+@Singleton
 public class CreateNationCommand implements ParameterizedCommand {
 
     @Inject

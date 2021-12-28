@@ -1,6 +1,7 @@
 package dev.haedhutner.towns.command.nation;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import dev.haedhutner.core.command.ParameterizedCommand;
 import dev.haedhutner.core.command.PlayerCommand;
 import dev.haedhutner.core.command.UserElement;
@@ -22,6 +23,7 @@ import javax.annotation.Nonnull;
 @Aliases("add")
 @Description("Add role to nation resident.")
 @Permission("atherystowns.nation.role")
+@Singleton
 public class AddNationRoleCommand implements PlayerCommand, ParameterizedCommand {
 
     @Inject

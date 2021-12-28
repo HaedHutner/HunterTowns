@@ -1,6 +1,7 @@
 package dev.haedhutner.towns.command.nation;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import dev.haedhutner.core.command.annotation.Aliases;
 import dev.haedhutner.core.command.annotation.Description;
 import dev.haedhutner.core.command.annotation.Permission;
@@ -17,6 +18,7 @@ import javax.annotation.Nonnull;
 @Aliases("list")
 @Description("Lists all nations.")
 @Permission("atherystowns.nation.list")
+@Singleton
 public class NationListCommand implements CommandExecutor {
 
     @Inject

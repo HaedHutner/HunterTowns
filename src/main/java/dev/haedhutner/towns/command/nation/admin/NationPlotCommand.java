@@ -1,6 +1,7 @@
 package dev.haedhutner.towns.command.nation.admin;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import dev.haedhutner.core.command.PlayerCommand;
 import dev.haedhutner.core.command.annotation.Aliases;
 import dev.haedhutner.core.command.annotation.Description;
@@ -17,6 +18,7 @@ import javax.annotation.Nonnull;
 @Aliases("plot")
 @Description("Displays information about the Nation Plot the player is standing in.")
 @Permission("atherystowns.nation.admin.plot")
+@Singleton
 public class NationPlotCommand implements PlayerCommand {
 
     @Inject

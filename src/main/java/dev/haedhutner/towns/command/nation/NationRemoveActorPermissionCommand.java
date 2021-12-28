@@ -1,6 +1,7 @@
 package dev.haedhutner.towns.command.nation;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import dev.haedhutner.core.command.ParameterizedCommand;
 import dev.haedhutner.core.command.PlayerCommand;
 import dev.haedhutner.core.command.UserElement;
@@ -25,6 +26,7 @@ import javax.annotation.Nonnull;
 @Aliases("revoke")
 @Description("Revokes a permission from an entity.")
 @Permission("atherystowns.nation.permission")
+@Singleton
 public class NationRemoveActorPermissionCommand implements ParameterizedCommand, PlayerCommand {
 
     @Inject

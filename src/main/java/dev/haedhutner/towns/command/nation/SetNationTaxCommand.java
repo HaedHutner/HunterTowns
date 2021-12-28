@@ -1,6 +1,7 @@
 package dev.haedhutner.towns.command.nation;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import dev.haedhutner.core.command.ParameterizedCommand;
 import dev.haedhutner.core.command.PlayerCommand;
 import dev.haedhutner.core.command.annotation.Aliases;
@@ -21,6 +22,7 @@ import javax.annotation.Nonnull;
 @Aliases("tax")
 @Description("Set the nation tax")
 @Permission("atherystowns.nation.tax")
+@Singleton
 public class SetNationTaxCommand implements PlayerCommand, ParameterizedCommand {
 
     @Inject

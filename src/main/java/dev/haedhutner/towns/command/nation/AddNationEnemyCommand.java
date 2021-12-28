@@ -1,6 +1,7 @@
 package dev.haedhutner.towns.command.nation;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import dev.haedhutner.core.command.ParameterizedCommand;
 import dev.haedhutner.core.command.PlayerCommand;
 import dev.haedhutner.core.command.annotation.Aliases;
@@ -20,6 +21,7 @@ import javax.annotation.Nonnull;
 @Aliases("enemy")
 @Description("Makes a nation enemies with yours.")
 @Permission("atherystowns.nation.enemy")
+@Singleton
 public class AddNationEnemyCommand implements ParameterizedCommand, PlayerCommand {
 
     @Inject

@@ -1,6 +1,7 @@
 package dev.haedhutner.towns.command.nation.admin;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import dev.haedhutner.core.command.ParameterizedCommand;
 import dev.haedhutner.core.command.annotation.Aliases;
 import dev.haedhutner.core.command.annotation.Description;
@@ -17,6 +18,7 @@ import org.spongepowered.api.command.args.CommandElement;
 
 import javax.annotation.Nonnull;
 
+@Singleton
 @Aliases("add")
 @Description("Adds a town to a nation.")
 @Permission("atherystowns.nation.admin.add")
