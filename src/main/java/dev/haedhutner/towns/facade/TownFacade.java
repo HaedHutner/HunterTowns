@@ -1,24 +1,25 @@
 package dev.haedhutner.towns.facade;
 
+import dev.haedhutner.core.HunterCore;
 import dev.haedhutner.core.economy.Economy;
+import dev.haedhutner.core.utils.CoreUtils;
 import dev.haedhutner.core.utils.Question;
 import dev.haedhutner.core.utils.Question.Answer;
-import dev.haedhutner.core.utils.UserUtils;
+import dev.haedhutner.parties.PartiesModule;
+import dev.haedhutner.parties.entity.Party;
+import dev.haedhutner.parties.facade.PartyFacade;
 import dev.haedhutner.towns.HunterTowns;
 import dev.haedhutner.towns.TownsConfig;
 import dev.haedhutner.towns.api.command.TownsCommandException;
 import dev.haedhutner.towns.api.permission.town.TownPermission;
 import dev.haedhutner.towns.api.permission.town.TownPermissions;
-import dev.haedhutner.towns.integration.AtherysPartiesIntegration;
 import dev.haedhutner.towns.model.PlotSelection;
 import dev.haedhutner.towns.model.entity.*;
 import dev.haedhutner.towns.service.*;
-import dev.haedhutner.towns.model.entity.*;
 import dev.haedhutner.towns.util.MathUtils;
 import com.flowpowered.math.vector.Vector2i;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import dev.haedhutner.towns.service.*;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.entity.living.player.Player;
@@ -40,10 +41,7 @@ import org.spongepowered.api.world.World;
 
 import javax.annotation.Nullable;
 import java.math.BigDecimal;
-import java.util.Collection;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.spongepowered.api.text.format.TextColors.*;
@@ -146,20 +144,43 @@ public class TownFacade implements EconomyFacade {
             }
         }
 
-        if (!Sponge.getPluginManager().isLoaded("atherysparties") ||
-                permissionFacade.isPermitted(player, TownPermissions.CREATE_WITHOUT_PARTY)) {
+        PartiesModule partiesModule = HunterCore.getInstance(PartiesModule.class);
+
+        boolean partiesEnabled = partiesModule.isEnabled();
+        boolean playerPermittedToCreateTownWithoutParty = permissionFacade.isPermitted(player, TownPermissions.CREATE_WITHOUT_PARTY);
+
+        if (!partiesEnabled || playerPermittedToCreateTownWithoutParty) {
             createTown(player, townName, homePlot, nation);
-        } else if (AtherysPartiesIntegration.playerHasParty(player)) {
-            Set<Player> partyMembers = AtherysPartiesIntegration.fetchPlayerPartyMembers(player);
-            if (partyMembers.size() < config.MIN_RESIDENTS_TOWN_CREATE) {
-                throw new TownsCommandException("Your party does not have enough members (Min: " + config.MIN_RESIDENTS_TOWN_CREATE + ").");
-            }
-            partyMembers.removeAll(partyMembers.stream().filter(this::isLeaderOfPlayerTown).collect(Collectors.toSet()));
-            pollFacade.sendCreateTownPoll(townName, partyMembers, player, homePlot, nation);
         }
-        else {
+
+        if (partiesEnabled) {
+            createTownPoll(player, townName, homePlot, nation);
+        }
+    }
+
+    private void createTownPoll(Player player, String townName, TownPlot homePlot, Nation nation) throws TownsCommandException {
+        PartyFacade partyFacade = HunterCore.getInstance(PartyFacade.class);
+
+        Optional<Party> playerParty = partyFacade.getPlayerParty(player);
+
+        if (!playerParty.isPresent()) {
             throw new TownsCommandException("You require a party to form a town!");
         }
+
+        Optional<Set<Player>> partyMembers = playerParty.map(partyFacade::getOnlinePartyMembers);
+
+        if (!partyMembers.isPresent()) {
+            throw new TownsCommandException("You are in a party with no members!");
+        }
+
+        if (partyMembers.get().size() < config.MIN_RESIDENTS_TOWN_CREATE) {
+            throw new TownsCommandException("Your party does not have enough members (Min: " + config.MIN_RESIDENTS_TOWN_CREATE + ").");
+        }
+
+        final Nation finalNation = nation;
+        partyMembers.get().stream()
+                .filter(p -> !this.isLeaderOfPlayerTown(p))
+                .forEach(p -> pollFacade.sendCreateTownPoll(townName, partyMembers.get(), player, homePlot, finalNation));
     }
 
     public Town createTown(Player player, String name, TownPlot homePlot, @Nullable Nation nation) throws CommandException {
@@ -834,7 +855,7 @@ public class TownFacade implements EconomyFacade {
 
         Resident leader = town.getLeader();
 
-        UserUtils.getUser(leader.getId()).ifPresent(user -> roleService.removeTownRole(user, town, config.TOWN.TOWN_LEADER_ROLE));
+        CoreUtils.userSearchByUuid(leader.getId()).ifPresent(user -> roleService.removeTownRole(user, town, config.TOWN.TOWN_LEADER_ROLE));
 
         Resident fakeResident = residentService.createFakeResident("None");
 
@@ -876,7 +897,7 @@ public class TownFacade implements EconomyFacade {
             townService.addResidentToTown(user, userResident, town);
         }
 
-        Optional<? extends User> currentTownLeader = UserUtils.getUser(town.getLeader().getId());
+        Optional<? extends User> currentTownLeader = CoreUtils.userSearchByUuid(town.getLeader().getId());
 
         if (currentTownLeader.isPresent()) {
             this.grantTown(currentTownLeader.get(), user);

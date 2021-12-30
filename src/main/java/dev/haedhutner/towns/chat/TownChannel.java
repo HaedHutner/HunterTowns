@@ -1,6 +1,7 @@
 package dev.haedhutner.towns.chat;
 
 import dev.haedhutner.chat.model.AtherysChannel;
+import dev.haedhutner.chat.model.ChatChannel;
 import dev.haedhutner.towns.HunterTowns;
 import dev.haedhutner.towns.model.entity.Town;
 import org.spongepowered.api.entity.living.player.Player;
@@ -8,7 +9,7 @@ import org.spongepowered.api.text.channel.MessageReceiver;
 
 import java.util.*;
 
-public class TownChannel extends AtherysChannel {
+public class TownChannel extends ChatChannel {
     public static final String PERMISSION = "atherystowns.town.chat";
 
     public TownChannel() {

@@ -1,6 +1,6 @@
 package dev.haedhutner.towns.facade;
 
-import dev.haedhutner.core.utils.TextUtils;
+import dev.haedhutner.core.utils.CoreUtils;
 import dev.haedhutner.towns.TownsConfig;
 import dev.haedhutner.towns.api.command.TownsCommandException;
 import dev.haedhutner.towns.api.permission.TownsPermissionContext;
@@ -211,7 +211,7 @@ public class PlotFacade {
         if (plotToHasRent && (!plotFrom.isPresent() || plotTo.get() != plotFrom.get())) {
             RentInfo rentInfo = plotTo.get().getRentInfo().get();
             Text price = config.DEFAULT_CURRENCY.format(rentInfo.getPrice());
-            Text duration = TextUtils.formatDuration(rentInfo.getPeriod().toMillis());
+            Text duration = CoreUtils.textFormatDuration(rentInfo.getPeriod().toMillis());
 
             Title title = Title.of(
                     Text.of(GOLD, plotTo.get().getName()),

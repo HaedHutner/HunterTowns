@@ -1,13 +1,12 @@
 package dev.haedhutner.towns.listener;
 
-import dev.haedhutner.core.utils.EntityUtils;
+import dev.haedhutner.core.utils.CoreUtils;
 import dev.haedhutner.towns.TownsConfig;
 import dev.haedhutner.towns.api.event.PlayerVoteEvent;
 import dev.haedhutner.towns.api.event.ResidentEvent;
 import dev.haedhutner.towns.facade.*;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import dev.haedhutner.towns.facade.*;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
@@ -82,7 +81,7 @@ public class PlayerListener {
 
     @Listener
     public void onPlayerDamage(DamageEntityEvent event, @Root EntityDamageSource source, @Getter("getTargetEntity") Player target) {
-        EntityUtils.playerAttackedEntity(source).ifPresent(attacker -> townFacade.onPlayerDamage(event, attacker, target));
+        CoreUtils.damageSearchPlayerSource(source).ifPresent(attacker -> townFacade.onPlayerDamage(event, attacker, target));
     }
 
     @Listener

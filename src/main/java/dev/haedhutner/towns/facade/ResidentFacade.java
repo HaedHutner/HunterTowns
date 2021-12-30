@@ -1,6 +1,6 @@
 package dev.haedhutner.towns.facade;
 
-import dev.haedhutner.core.utils.UserUtils;
+import dev.haedhutner.core.utils.CoreUtils;
 import dev.haedhutner.towns.TownsConfig;
 import dev.haedhutner.towns.api.command.TownsCommandException;
 import dev.haedhutner.towns.model.entity.Nation;
@@ -103,7 +103,7 @@ public class ResidentFacade {
         Text title = Text.of(GOLD, resident.getName(), DARK_GRAY, " (", status, DARK_GRAY, ")");
         String padding = StringUtils.repeat("=", townsMsg.getPadding(title.toPlain().length()));
 
-        String lastPlayed = UserUtils.getUser(resident.getId())
+        String lastPlayed = CoreUtils.userSearchByUuid(resident.getId())
                 .flatMap(user -> user.get(Keys.LAST_DATE_PLAYED))
                 .map(formatter::format)
                 .orElse("N/A");

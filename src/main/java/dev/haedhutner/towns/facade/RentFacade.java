@@ -1,7 +1,7 @@
 package dev.haedhutner.towns.facade;
 
 import dev.haedhutner.core.economy.Economy;
-import dev.haedhutner.core.utils.TextUtils;
+import dev.haedhutner.core.utils.CoreUtils;
 import dev.haedhutner.towns.TownsConfig;
 import dev.haedhutner.towns.api.command.TownsCommandException;
 import dev.haedhutner.towns.api.permission.TownsPermissionContext;
@@ -99,7 +99,7 @@ public class RentFacade implements EconomyFacade {
 
         if (rentInfo.getRenter() == null) {
             rentText.append(Text.of(DARK_GREEN, "Rent Cost: ", GOLD, config.DEFAULT_CURRENCY.format(rentInfo.getPrice()), Text.NEW_LINE));
-            rentText.append(Text.of(DARK_GREEN, "Rent For: ", GOLD, TextUtils.formatDuration(rentInfo.getPeriod().toMillis())));
+            rentText.append(Text.of(DARK_GREEN, "Rent For: ", GOLD, CoreUtils.textFormatDuration(rentInfo.getPeriod().toMillis())));
         } else {
             rentText.append(Text.of(DARK_GREEN, "Rented By: ", residentFacade.renderResident(rentInfo.getRenter()), Text.NEW_LINE));
             rentText.append(Text.of(DARK_GREEN, "Rented For: ", GOLD, formatRentDuration(rentInfo)));
@@ -142,7 +142,7 @@ public class RentFacade implements EconomyFacade {
 
     private Text formatRentDuration(RentInfo rentInfo) {
         Duration timeLeft = Duration.between(LocalDateTime.now(), rentService.getEndTimeForRent(rentInfo).get());
-        return TextUtils.formatDuration(timeLeft.toMillis());
+        return CoreUtils.textFormatDuration(timeLeft.toMillis());
     }
 
     private RentInfo getRentInfoFromPlot(TownPlot plot) throws TownsCommandException {
