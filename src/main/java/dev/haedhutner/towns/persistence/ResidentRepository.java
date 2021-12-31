@@ -1,5 +1,6 @@
 package dev.haedhutner.towns.persistence;
 
+import com.google.inject.Provider;
 import dev.haedhutner.core.db.CachedHibernateRepository;
 import dev.haedhutner.towns.model.entity.Resident;
 import dev.haedhutner.towns.persistence.cache.TownsCache;
@@ -11,7 +12,8 @@ import java.util.UUID;
 @Singleton
 public class ResidentRepository extends CachedHibernateRepository<Resident, UUID> {
 
-    private TownsCache townsCache;
+    @Inject
+    private Provider<TownsCache> townsCache;
 
     @Inject
     protected ResidentRepository(TownsCache townsCache) {
@@ -19,4 +21,6 @@ public class ResidentRepository extends CachedHibernateRepository<Resident, UUID
         super.cache = townsCache.getResidentCache();
         this.townsCache = townsCache;
     }
+
+
 }

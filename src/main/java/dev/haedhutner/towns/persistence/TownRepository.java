@@ -16,7 +16,7 @@ public class TownRepository extends CachedHibernateRepository<Town, Long> {
     private TownsCache townsCache;
 
     @Inject
-    protected TownRepository(TownsCache townsCache) {
+    protected TownRepository() {
         super(Town.class);
         super.cache = townsCache.getTownCache();
         this.townsCache = townsCache;
@@ -37,6 +37,6 @@ public class TownRepository extends CachedHibernateRepository<Town, Long> {
     }
 
     public Collection<Town> getAll() {
-        return townsCache.getTownCache().getAll();
+        return this.cache.getAll();
     }
 }

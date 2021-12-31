@@ -1,5 +1,6 @@
 package dev.haedhutner.towns.persistence;
 
+import com.google.inject.Provider;
 import dev.haedhutner.core.db.CachedHibernateRepository;
 import dev.haedhutner.towns.model.entity.Nation;
 import dev.haedhutner.towns.model.entity.Town;
@@ -12,8 +13,8 @@ import java.util.Optional;
 
 @Singleton
 public class NationRepository extends CachedHibernateRepository<Nation, Long> {
-
-    private TownsCache townsCache;
+    @Inject
+    private Provider<TownsCache> townsCache;
 
     @Inject
     protected NationRepository(TownsCache townsCache) {

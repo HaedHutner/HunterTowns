@@ -27,7 +27,6 @@ public class ResidentService {
     @Inject
     private ResidentRepository residentRepository;
 
-    @Inject
     private UserStorageService userStorageService;
 
     ResidentService() {
@@ -69,7 +68,7 @@ public class ResidentService {
     }
 
     public Optional<User> getUserFromResident(Resident resident) {
-        return userStorageService.get(resident.getUniqueId());
+        return getUserStorageService().get(resident.getUniqueId());
     }
 
     public Optional<Player> getPlayerFromResident(Resident resident) {
@@ -154,5 +153,13 @@ public class ResidentService {
     public void removeNationRole(Resident resident, String role) {
         resident.getNationRoleIds().remove(role);
         residentRepository.saveOne(resident);
+    }
+
+    private UserStorageService getUserStorageService() {
+        if (userStorageService == null) {
+            userStorageService = Sponge.getServiceManager().provide(UserStorageService.class).get();
+        }
+
+        return userStorageService;
     }
 }

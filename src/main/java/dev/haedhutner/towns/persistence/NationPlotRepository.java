@@ -1,6 +1,8 @@
 package dev.haedhutner.towns.persistence;
 
+import com.google.inject.Provider;
 import dev.haedhutner.core.db.CachedHibernateRepository;
+import dev.haedhutner.core.db.cache.SimpleCache;
 import dev.haedhutner.towns.model.entity.NationPlot;
 import dev.haedhutner.towns.model.entity.Town;
 import dev.haedhutner.towns.persistence.cache.TownsCache;
@@ -12,18 +14,15 @@ import java.util.Collection;
 @Singleton
 public class NationPlotRepository extends CachedHibernateRepository<NationPlot, Long> {
 
-    private TownsCache townsCache;
+    private ResidentRepository residentRepository;
 
-    @Inject
-    public NationPlotRepository(TownsCache townsCache) {
-        super(NationPlot.class);
-        super.cache = townsCache.getNationPlotCache();
-        this.townsCache = townsCache;
+    public NationPlotRepository() {
+        super(NationPlot.class, new SimpleCache<>());
     }
 
     @Override
     public void initCache() {
-        townsCache.getResidentCache().getAll().forEach(resident -> {
+        residentRepository.findAll().forEach(resident -> {
             Town town = resident.getTown();
             if (town != null && town.getNation() != null) {
                 super.cache.addAll(town.getNation().getPlots());
