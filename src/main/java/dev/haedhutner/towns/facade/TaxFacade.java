@@ -38,6 +38,9 @@ public class TaxFacade {
     @Inject
     private TownService townService;
 
+    @Inject
+    private TownsMessagingFacade townsMessagingFacade;
+
     private Task townTaxTask;
 
     public void init() {
@@ -51,7 +54,6 @@ public class TaxFacade {
 
     public void taxTowns() {
         Set<Town> townsToRemove = new HashSet<>();
-        TownsMessagingFacade townsMsg = HunterTowns.getInstance().getTownsMessagingService();
 
         for (Town town : taxService.getTaxableTowns()) {
             double taxPaymentAmount = Math.floor(taxService.getTaxAmount(town));
@@ -64,7 +66,7 @@ public class TaxFacade {
                 town.setLastTaxDate(LocalDateTime.now());
 
                 if (transferResult.getResult() == ResultType.SUCCESS) {
-                    townsMsg.broadcastTownInfo(town, Text.of("Paid ", GOLD,
+                    townsMessagingFacade.broadcastTownInfo(town, Text.of("Paid ", GOLD,
                             config.DEFAULT_CURRENCY.format(BigDecimal.valueOf(taxPaymentAmount)), DARK_GREEN, " to ",
                             GOLD, town.getNation().getName(), DARK_GREEN, " in taxes."));
                     taxService.setTaxesPaid(town, true);
@@ -72,11 +74,11 @@ public class TaxFacade {
                         transferResult.getResult() == ResultType.ACCOUNT_NO_FUNDS) {
 
                     if (town.getTaxFailedCount() >= config.TAXES.MAX_TAX_FAILURES) {
-                        townsMsg.broadcastTownError(town, Text.of("Failure to pay taxes has resulted in your ",
+                        townsMessagingFacade.broadcastTownError(town, Text.of("Failure to pay taxes has resulted in your ",
                                 "town being ruined!"));
                         townsToRemove.add(town);
                     } else {
-                        townsMsg.broadcastTownError(town, Text.of("You have failed to pay your taxes!",
+                        townsMessagingFacade.broadcastTownError(town, Text.of("You have failed to pay your taxes!",
                                 " If not paid by next tax cycle your town will be ruined!",
                                 " Town features have been limited until paid off."));
 

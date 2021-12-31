@@ -11,7 +11,7 @@ import java.util.Set;
 public class TownsContextCalculator implements ContextCalculator<Subject> {
     @Override
     public void accumulateContexts(Subject calculable, Set<Context> accumulator) {
-        HunterTowns.getInstance().getPermissionService().accumulateContexts(calculable, accumulator);
+        HunterTowns.getInstance(TownsPermissionService.class).accumulateContexts(calculable, accumulator);
     }
 
     @Override

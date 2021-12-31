@@ -1,12 +1,13 @@
 package dev.haedhutner.towns.api.command;
 
 import dev.haedhutner.towns.HunterTowns;
+import dev.haedhutner.towns.facade.TownsMessagingFacade;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.text.Text;
 
 public class TownsCommandException extends CommandException {
     public TownsCommandException(Text message) {
-        super(HunterTowns.getInstance().getTownsMessagingService().formatError(message));
+        super(HunterTowns.getInstance(TownsMessagingFacade.class).formatError(message));
     }
 
     public TownsCommandException(Object... msg) {

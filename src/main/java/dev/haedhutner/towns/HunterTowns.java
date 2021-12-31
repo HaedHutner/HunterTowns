@@ -1,7 +1,6 @@
 package dev.haedhutner.towns;
 
-import dev.haedhutner.chat.ChatModule;
-import dev.haedhutner.core.HunterCore;
+import dev.haedhutner.chat.event.ChatChannelRegistrationEvent;
 import dev.haedhutner.core.command.CommandService;
 import dev.haedhutner.core.economy.Economy;
 import dev.haedhutner.core.event.HunterDatabaseMigrationEvent;
@@ -9,13 +8,14 @@ import dev.haedhutner.core.event.HunterHibernateConfigurationEvent;
 import dev.haedhutner.core.event.HunterHibernateInitializedEvent;
 import dev.haedhutner.towns.api.permission.*;
 import dev.haedhutner.towns.api.permission.world.WorldPermission;
+import dev.haedhutner.towns.chat.NationChannel;
+import dev.haedhutner.towns.chat.TownChannel;
 import dev.haedhutner.towns.command.nation.NationCommand;
 import dev.haedhutner.towns.command.plot.PlotCommand;
 import dev.haedhutner.towns.command.rent.RentCommand;
 import dev.haedhutner.towns.command.resident.ResidentCommand;
 import dev.haedhutner.towns.command.town.TownCommand;
 import dev.haedhutner.towns.facade.*;
-import dev.haedhutner.towns.integration.AtherysChatIntegration;
 import dev.haedhutner.towns.listener.PlayerListener;
 import dev.haedhutner.towns.listener.ProtectionListener;
 import dev.haedhutner.towns.listener.RaidListener;
@@ -143,10 +143,6 @@ public class HunterTowns {
         Sponge.getEventManager().registerListeners(this, protectionListener);
         Sponge.getEventManager().registerListeners(this, raidListener);
 
-        if (HunterCore.getInstance(ChatModule.class).isEnabled()) {
-            AtherysChatIntegration.registerChannels();
-        }
-
         Sponge.getServiceManager()
                 .provideUnchecked(org.spongepowered.api.service.permission.PermissionService.class)
                 .registerContextCalculator(new TownsContextCalculator());
@@ -190,6 +186,12 @@ public class HunterTowns {
         event.registerForMigration(ID);
     }
 
+    @Listener
+    public void onChatChannelRegistration(ChatChannelRegistrationEvent event) {
+        event.registerChatChannel(new TownChannel());
+        event.registerChatChannel(new NationChannel());
+    }
+
     @Listener(order = Order.LAST)
     public void onStart(GameStartingServerEvent event) {
         if (init) start();
@@ -209,124 +211,12 @@ public class HunterTowns {
         return logger;
     }
 
-//    public TownRepository getTownRepository() {
-//        return components.townRepository;
-//    }
-//
-//    public NationRepository getNationRepository() {
-//        return components.nationRepository;
-//    }
-//
-//    public TownPlotRepository getTownPlotRepository() {
-//        return components.townPlotRepository;
-//    }
-//
-//    public NationPlotRepository getNationPlotRepository() {
-//        return components.nationPlotRepository;
-//    }
-//
-//    public ResidentRepository getResidentRepository() {
-//        return components.residentRepository;
-//    }
-//
-//    public TaxService getTaxService() {
-//        return components.taxService;
-//    }
-//
-//    public PollService getPollService() {
-//        return components.pollService;
-//    }
-//
-//    public NationService getNationService() {
-//        return components.nationService;
-//    }
-//
-//    public TownService getTownService() {
-//        return components.townService;
-//    }
-//
-//    public PlotService getPlotService() {
-//        return components.plotService;
-//    }
-//
-//    public ResidentService getResidentService() {
-//        return components.residentService;
-//    }
-//
-//    public RoleService getRoleService() {
-//        return components.roleService;
-//    }
-//
-//    public RentService getRentService() {
-//        return components.rentService;
-//    }
-//
-//    public TownsPermissionService getPermissionService() {
-//        return components.townsPermissionService;
-//    }
-//
-//    public TownsMessagingFacade getTownsMessagingService() {
-//        return components.townsMessagingFacade;
-//    }
-//
-//    public TownRaidService getTownRaidService() {
-//        return components.townRaidService;
-//    }
-//
-//    public NationFacade getNationFacade() {
-//        return components.nationFacade;
-//    }
-//
-//    public TownFacade getTownFacade() {
-//        return components.townFacade;
-//    }
-//
-//    public TownSpawnFacade getTownSpawnCommand() {
-//        return components.townSpawnFacade;
-//    }
-//
-//    public TownAdminFacade getTownAdminFacade() {
-//        return components.townAdminFacade;
-//    }
-//
-//    public PlotFacade getPlotFacade() {
-//        return components.plotFacade;
-//    }
-//
-//    public ResidentFacade getResidentFacade() {
-//        return components.residentFacade;
-//    }
-//
-//    public PermissionFacade getPermissionFacade() {
-//        return components.permissionFacade;
-//    }
-//
-//    public PlotSelectionFacade getPlotSelectionFacade() {
-//        return components.plotSelectionFacade;
-//    }
-//
-//    public PollFacade getPollFacade() {
-//        return components.pollFacade;
-//    }
-//
-//    public PlotBorderFacade getPlotBorderFacade() {
-//        return components.plotBorderFacade;
-//    }
-//
-//    public TownRaidFacade getTownRaidFacade() {
-//        return components.townRaidFacade;
-//    }
-//
-//    public TaxFacade getTaxFacade() {
-//        return components.taxFacade;
-//    }
-//
-//    public RentFacade getRentFacade() {
-//        return components.rentFacade;
-//    }
-//
-//    public TownsCache getTownsCache() {
-//        return components.townsCache;
-//    }
+    public Injector getInjector() {
+        return spongeInjector;
+    }
+
+    public static <T> T getInstance(Class<T> clazz) {
+        return getInstance().getInjector().getInstance(clazz);
+    }
 
 }
